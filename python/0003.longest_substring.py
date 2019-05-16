@@ -3,10 +3,10 @@ def longest_substring_window(s):
     mx = i = j = 0
     for j, c in enumerate(s):
         if c in hmap:
-            i = max(hmap[c] + 1, i)
-        hmap[c] = j
-        j += 1
-        mx = max(mx, j - i)
+            print(c, hmap[c], i)
+            i = max(hmap[c], i)
+        hmap[c] = j + 1
+        mx = max(mx, j - i + 1)
     return mx
 
 
@@ -28,10 +28,10 @@ def longest_substring(s):
 
 
 def test():
-    l = longest_substring_window
-    assert(l('abcabcd') == 4)
-    assert(l('abba') == 2)
-    assert(l('dheeraj') == 4)
+    ll = longest_substring_window
+    assert ll('abcabcd') == 4
+    assert ll('abba') == 2
+    assert ll('dheeraj') == 4
 
 
 if __name__ == '__main__':
