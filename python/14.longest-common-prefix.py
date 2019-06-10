@@ -1,18 +1,18 @@
 def longest_common_prefix(strings):
-    if len(strings) == 0:
+    if not strings:
         return ''
 
     prefix = strings[0]
     for string in strings[1:]:
         while string.find(prefix) != 0:
             prefix = prefix[:-1]
-        if len(prefix) == 0:
+        if not prefix:
             return ''
     return prefix
 
 
 def longest_common_prefix_first(strings):
-    if len(strings) == 0:
+    if not strings:
         return ''
 
     answer = strings[0]
@@ -23,15 +23,15 @@ def longest_common_prefix_first(strings):
                 break
             matched.append(a)
         answer = matched
-        if len(answer) == 0:
+        if not answer:
             break
     return ''.join(answer)
 
 
 def test():
-    l = longest_common_prefix
-    assert(l(['flow', 'flower', 'flaw']) == 'fl')
-    assert(l(['racecar', 'race', 'racer']) == 'race')
+    ll = longest_common_prefix
+    assert ll(['flow', 'flower', 'flaw']) == 'fl'
+    assert ll(['racecar', 'race', 'racer']) == 'race'
 
 
 if __name__ == '__main__':
