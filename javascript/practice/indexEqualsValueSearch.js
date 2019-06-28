@@ -1,3 +1,4 @@
+function indexEqualsValueSearch(arr) {
   let mid = 0,
     left = 0,
     right = arr.length;
