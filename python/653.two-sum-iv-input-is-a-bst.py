@@ -68,7 +68,7 @@ class Solution:
                 dq.append(node.right)
         return False
 
-    def findTarget(self, root: TreeNode, k: int) -> bool:
+    def findTarget_inorder(self, root: TreeNode, k: int) -> bool:
         def inorder(root):
             if root:
                 inorder(root.left)
@@ -89,12 +89,40 @@ class Solution:
                 left += 1
         return False
 
+    def findTarget(self, root: TreeNode, k: int) -> bool:
+        def get_left(node):
+            if node.left:
+                yield from get_left(node.left)
+            yield node.val
+            if node.right:
+                yield from get_left(node.right)
+
+        def get_right(node):
+            if node.right:
+                yield from get_right(node.right)
+            yield node.val
+            if node.left:
+                yield from get_right(node.left)
+
+        lgen, rgen = get_left(root), get_right(root)
+        val_left, val_right = next(lgen), next(rgen)
+        while val_left < val_right:
+            print(val_left, val_right)
+            total = val_left + val_right
+            if total < k:
+                val_left = next(lgen)
+            elif total > k:
+                val_right = next(rgen)
+            else:
+                return True
+        return False
+
 
 def test():
     sol = Solution()
     cases = [
         ([5, 3, 6, 2, 4, None, 7], 9),
-        ([5, 3, 6, 2, 4, None, 7], 22),
+        ([5, 3, 6, 2, 4, None, 7], 5),
     ]
     for T, k in cases:
         print(sol.findTarget(constructBST(T), k))
