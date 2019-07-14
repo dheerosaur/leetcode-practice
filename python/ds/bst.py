@@ -20,6 +20,18 @@ def traverse(root):
     traverse(root.right)
 
 
+def _bfs(root):
+    result = []
+    q = [root]
+    while q:
+        node = q.pop()
+        if node is not None:
+            result.append(node.val)
+            q.append(node.left)
+            q.append(node.right)
+    return result
+
+
 def constructBST(vals, i=0):
     if i < len(vals) and vals[i] is not None:
         root = TreeNode(vals[i])
