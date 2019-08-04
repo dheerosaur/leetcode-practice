@@ -22,29 +22,34 @@
 # empty string "".
 # If there is such window, you are guaranteed that there will always be only
 # one unique minimum window in S.
+import collections
 
 
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        letter_map = {c: 0 for c in t}
+        n = len(s)
+        if n < len(t) or not t:
+            return ""
+
+        req = collections.Counter(t)
+        has = {c: 0 for c in t}
+
         left, right = 0, 0
+        best_left, best_right = 0, len(s) + 1
 
-        best_left = 0
-        best_right = len(s) + 1
-
-        while right < len(s):
-            while right < len(s) and not all(letter_map.values()):
-                if s[right] in letter_map:
-                    letter_map[s[right]] += 1
+        while right < n:
+            while right < n and not all(has[c] >= req[c] for c in req):
+                if s[right] in has:
+                    has[s[right]] += 1
                 right += 1
-            while left < len(s) and all(letter_map.values()):
-                if s[left] in letter_map:
-                    letter_map[s[left]] -= 1
+            while left < n and all(has[c] >= req[c] for c in req):
+                if s[left] in has:
+                    has[s[left]] -= 1
                 left += 1
             if (right - left + 1) < (best_right - best_left):
                 best_left = left - 1
                 best_right = right
-        if best_right - best_left > len(s):
+        if best_right - best_left > n:
             return ""
         return s[best_left:best_right]
 
@@ -56,6 +61,9 @@ def test():
         ("ADOBECODEBANC", "ABCD"),
         ("ADOBECODEBANC", "XYZ"),
         ("ADOBECODEBANCDEF", "DEF"),
+        ("AA", "AA"),
+        ("AABA", "A"),
+        ("A", "AA"),
     ]
     for case in cases:
         print(sol.minWindow(*case))
